@@ -68,6 +68,9 @@ int AnnotateText ( std::string* CONTENT ) {
     Document document;
     AnnotateTextRequest_Features *features;
     EncodingType encoding_type;
+    AnnotateTextResponse response;
+    grpc::Status status;
+    grpc::ClientContext context;
     std::cout << "Done!" << std::endl;
 
     sleep(0.5);
@@ -101,12 +104,30 @@ int AnnotateText ( std::string* CONTENT ) {
 
 
     // Send Request //
+    auto creds = grpc::GoogleDefaultCredentials();
+    auto channel = grpc::CreateChannel( SCOPE, creds );
+    std::unique_ptr< LanguageService::Stub> stub( LanguageService::NewStub( channel ) );
+    status = stub->AnnotateText( &context, request, &response );
 
-
-
-    //-----------------------//
     // AnnotateText Response //
-    //-----------------------//
+    cout << "status.ok(): " << status.ok() << endl;
+
+    if ( status.ok() ) {
+        cout << "Status returned OK\nSentences Size :" << response.sentences_size() << endl;
+        cout << "Tokens Size :" << response.tokens_size() << endl;
+        cout << "Entities Size :" << response.entities_size() << endl;
+        cout << "Has Document Sentiment :" << response.has_document_sentiment() << endl;
+
+    } else if ( status.ok() ){
+        cout << "Status Returned Canceled" << endl;
+
+    }else {
+      cout << status.error_code() << ": " << status.error_message() << status.ok() << endl;
+      cerr << "RPC failed" << endl;;
+
+    }
+
+    cout << "\nAll Finished!" << endl;
 
 
 
@@ -117,10 +138,16 @@ int AnnotateText ( std::string* CONTENT ) {
 }
 
 
-int main () {
-
+int main ( int argc, char* argv[] ) {
 
     GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+    // VERIFY  ARGS //
+    if ( argc < 3 ) {
+        std::cerr << "Usage:  " << argv[0] << " [REQUEST] [CONTENT]" << std::endl;
+        std::cerr << "\tCheck README.md for more information on usage." << std::endl;
+    	return -1;
+    }
 
     std::string CONTENT = "Hello, this is a test!";
     AnnotateText( &CONTENT );
@@ -131,4 +158,3 @@ int main () {
 }
 
 // TODO: There is a seg fault that I belive is cause by not using the pointers incorrectly for mutable_xxxx() or set_allocated_xxxx()
-//
