@@ -41,17 +41,17 @@ Currently it takes two arguments, [REQUEST] and [CONTENT].
 
 *REQUEST*
 
-    _AnalyzeEntities_: "Entity Analysis inspects the given text for known entities (proper nouns such as public figures, landmarks, etc.), and returns information about those entities. Entity analysis is performed with the analyzeEntities method." [Source](https://cloud.google.com/natural-language/docs/analyzing-entities)
+_AnalyzeEntities_: "Entity Analysis inspects the given text for known entities (proper nouns such as public figures, landmarks, etc.), and returns information about those entities. Entity analysis is performed with the analyzeEntities method." [Source](https://cloud.google.com/natural-language/docs/analyzing-entities)
     
-    _AnalizeSentiment_:  "Sentiment Analysis inspects the given text and identifies the prevailing emotional opinion within the text, especially to determine a writer's attitude as positive, negative, or neutral. Sentiment analysis is performed through the analyzeSentiment method. Currently English, Spanish, and Japanese languages are supported for sentiment analysis." [Source](https://cloud.google.com/natural-language/docs/analyzing-sentiment)
+_AnalizeSentiment_:  "Sentiment Analysis inspects the given text and identifies the prevailing emotional opinion within the text, especially to determine a writer's attitude as positive, negative, or neutral. Sentiment analysis is performed through the analyzeSentiment method. Currently English, Spanish, and Japanese languages are supported for sentiment analysis." [Source](https://cloud.google.com/natural-language/docs/analyzing-sentiment)
     
-    _AnalyzeSyntax_: "Syntactic Analysis extracts linguistic information, breaking up the given text into a series of sentences and tokens (generally, word boundaries), providing further analysis on those tokens. Syntactic Analysis is performed with the analayzeSyntax method." [Source](https://cloud.google.com/natural-language/docs/analyzing-syntax)
+_AnalyzeSyntax_: "Syntactic Analysis extracts linguistic information, breaking up the given text into a series of sentences and tokens (generally, word boundaries), providing further analysis on those tokens. Syntactic Analysis is performed with the analayzeSyntax method." [Source](https://cloud.google.com/natural-language/docs/analyzing-syntax)
     
-    _AnnotateText_: "The request message for the text annotation API, which can perform multiple analysis types (sentiment, entities, and syntax) in one call." [Source](https://cloud.google.com/natural-language/docs/reference/rpc/google.cloud.language.v1#google.cloud.language.v1.AnnotateTextRequest)
+_AnnotateText_: "The request message for the text annotation API, which can perform multiple analysis types (sentiment, entities, and syntax) in one call." [Source](https://cloud.google.com/natural-language/docs/reference/rpc/google.cloud.language.v1#google.cloud.language.v1.AnnotateTextRequest)
     
 *CONTENT*
 
-    *: This can be a word, sentence or (if you're lucky) maybe paragraph. I've only tested a sentence or two and haven't looked into what the limiting variable would be.
+*: This can be a word, sentence or (if you're lucky) maybe paragraph. I've only tested a sentence or two and haven't looked into what the limiting variable would be.
     
 ```
 Example:
