@@ -42,7 +42,7 @@
 
 syntax = "proto3";
 
-package google_cloud_natural_language;
+package google.cloud.language.v1;
 
 
 service LanguageService {
@@ -250,13 +250,12 @@ message Document {
 
     Type type = 1;
 
-    string language = 2;
+    string language = 4;
 
-    string content = 3;
+    string content = 2;
 
-    // or 
+    string gcs_content_uri = 3;
 
-    //string gcs_content_uri = 3;
 
 }
 
