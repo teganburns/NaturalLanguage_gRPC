@@ -24,7 +24,7 @@ yaourt -S google-cloud-sdk
 
 Install and configure [Protocol Buffers (proto3)](https://developers.google.com/protocol-buffers/) along with gRPC. The [Quickstart](http://www.grpc.io/docs/quickstart/cpp.html) section on grpc.io covers the installation/setup process in more detail. 
 
-*Arch Linux:*
+**Arch Linux**:
 ```
 Note: This installs both gRPC and Proto3. (Thank jeebus!)
 
@@ -40,7 +40,7 @@ In order to compile this you will need to use *make*. If you are not fimiliar wi
 
 ### Running
 
-To run the programi, simply execute it!
+To run the program, simply execute it!
 ```
 ./natural_language
 ```
@@ -57,16 +57,17 @@ The first prompt will ask what request type you are making. You will need to ent
 Please select a number...
 ```
 
-*REQUEST*
-
-**AnalyzeEntities**: "Entity Analysis inspects the given text for known entities (proper nouns such as public figures, landmarks, etc.), and returns information about those entities. Entity analysis is performed with the analyzeEntities method." [Source](https://cloud.google.com/natural-language/docs/analyzing-entities)
+*AnalyzeEntities*:
+> "Entity Analysis inspects the given text for known entities (proper nouns such as public figures, landmarks, etc.), and returns information about those entities. Entity analysis is performed with the analyzeEntities method." [Source](https://cloud.google.com/natural-language/docs/analyzing-entities)
     
-**AnalizeSentiment**:  "Sentiment Analysis inspects the given text and identifies the prevailing emotional opinion within the text, especially to determine a writer's attitude as positive, negative, or neutral. Sentiment analysis is performed through the analyzeSentiment method. Currently English, Spanish, and Japanese languages are supported for sentiment analysis." [Source](https://cloud.google.com/natural-language/docs/analyzing-sentiment)
+*AnalizeSentiment*:
+> "Sentiment Analysis inspects the given text and identifies the prevailing emotional opinion within the text, especially to determine a writer's attitude as positive, negative, or neutral. Sentiment analysis is performed through the analyzeSentiment method. Currently English, Spanish, and Japanese languages are supported for sentiment analysis." [Source](https://cloud.google.com/natural-language/docs/analyzing-sentiment)
     
-**AnalyzeSyntax**: "Syntactic Analysis extracts linguistic information, breaking up the given text into a series of sentences and tokens (generally, word boundaries), providing further analysis on those tokens. Syntactic Analysis is performed with the analayzeSyntax method." [Source](https://cloud.google.com/natural-language/docs/analyzing-syntax)
+*AnalyzeSyntax*:
+> "Syntactic Analysis extracts linguistic information, breaking up the given text into a series of sentences and tokens (generally, word boundaries), providing further analysis on those tokens. Syntactic Analysis is performed with the analayzeSyntax method." [Source](https://cloud.google.com/natural-language/docs/analyzing-syntax)
     
-**AnnotateText**: "The request message for the text annotation API, which can perform multiple analysis types (sentiment, entities, and syntax) in one call." [Source](https://cloud.google.com/natural-language/docs/reference/rpc/google.cloud.language.v1#google.cloud.language.v1.AnnotateTextRequest)
----
+*AnnotateText*:
+> "The request message for the text annotation API, which can perform multiple analysis types (sentiment, entities, and syntax) in one call." [Source](https://cloud.google.com/natural-language/docs/reference/rpc/google.cloud.language.v1#google.cloud.language.v1.AnnotateTextRequest)
 
 The second prompt will ask for the content or the location of the content.
 ```
@@ -77,11 +78,15 @@ The second prompt will ask for the content or the location of the content.
 Please select a number...
 ```
 
-**CONTENT**
 
-**Local content (file)**: The request content will be a local file. You will need to enter a file path when prompted to do so. 
-**Local content (key input)**: The request content will be typed by the user when prompted to do so.
-**GCS URL (Google Cloud Storage URL)**: The request content will be a [Google Cloud Storage URL](https://console.cloud.google.com/storage/). The format is *gs://YOUR_PROJECT* for example *gs://personal_projects/NaturalLanguage.txt*.
+*Local content (file)*:
+> The request content will be a local file. You will need to enter a file path when prompted to do so. 
+
+*Local content (key input)*:
+> The request content will be typed by the user when prompted to do so.
+
+*GCS URL (Google Cloud Storage URL)*:
+> The request content will be a [Google Cloud Storage URL](https://console.cloud.google.com/storage/). The format is *gs://YOUR_PROJECT* for example *gs://personal_projects/NaturalLanguage.txt*.
 
 *: This can be a word, sentence, maybe paragraph. I've only tested a sentence or two and haven't looked into what the API charter limit is.
     
