@@ -11,6 +11,8 @@ https://cloud.google.com/natural-language/docs/reference/rpc/
 
 ## Usage
 
+![](https://github.com/teganburns/NaturalLanguage_gRPC/blob/master/docs/media/demonstration.gif?raw=true)
+
 ### Prerequisites
 To use this you need to install and configure the [Google Cloud SDK](https://cloud.google.com/sdk/).
 
