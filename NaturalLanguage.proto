@@ -1,5 +1,6 @@
 // Author: Tegan Burns-Berger
 
+// Should match January 18, 2017 revision https://cloud.google.com/natural-language/docs/reference/rpc/google.cloud.language.v1
 
 // --- REFRENCE ---  //
 //LanguageService (interface)
@@ -464,7 +465,7 @@ message PartOfSpeech {
 
     Aspect aspect = 1;
 
-    Case case = 2;
+    Case instance = 2;
 
     Form form = 3;
 
@@ -508,7 +509,7 @@ message TextSpan {
 
     string content = 1;
 
-    float score = 2;
+    int32 begin_offset = 2;
 
 }
 

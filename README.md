@@ -1,11 +1,13 @@
-# Overview
+
+# Cloud Natural Language API (C++)
+C++ implmentations using Google's Nautral Language API. Checkout Google's [Natual Language API](https://cloud.google.com/natural-language/)
+ALL projects  use  gRPC wich you can checkout at their [Main Website](http://www.grpc.io/) or the [Git Repo](https://github.com/grpc/grpc)
+
+## Overview
 
 gRPC implimentations of Google's "Cloud Natural Language API" in C++.
 https://cloud.google.com/natural-language/docs/reference/rpc/
 
-## Cloud Natural Language API (C++)
-C++ implmentations using Google's Nautral Language API. Checkout Google's [Natual Language API](https://cloud.google.com/natural-language/)
-ALL projects  use  gRPC wich you can checkout at their [Main Website](http://www.grpc.io/) or the [Git Repo](https://github.com/grpc/grpc)
 
 ## Usage
 
@@ -33,10 +35,8 @@ There are section of the code you will need to change before using. These sectio
 In order to compile this you will need to use *make*.
 
 ### Running
-Currently it takes two arguments, [REQUEST] and [CONTENT]. 
-
 ```
-./main_cpp [REQUEST] [CONTENT]
+./natural_language
 ```
 
 *REQUEST*
@@ -51,11 +51,12 @@ _AnnotateText_: "The request message for the text annotation API, which can perf
     
 *CONTENT*
 
-*: This can be a word, sentence or (if you're lucky) maybe paragraph. I've only tested a sentence or two and haven't looked into what the limiting variable would be.
+*: This can be a word, sentence, maybe paragraph. I've only tested a sentence or two and haven't looked into what the charter limit is.
     
-```
-Example:
 
-./main_cpp AnnotateText Who is Linus Torvalds?
-```
+## Please Note
+
+04/05/2017 - Google's [documentation](https://cloud.google.com/natural-language/docs/reference/rpc/google.cloud.language.v1#google.cloud.language.v1.PartOfSpeech.Case) has a message "PartOfSpeech.Case" while this is valid the variable, "case" is not. This has been changed in the protofile to "instance".
+
+
 

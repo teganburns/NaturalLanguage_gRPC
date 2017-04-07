@@ -2,12 +2,12 @@ CXX=g++
 CXXFLAGS=-std=c++11 -g
 LDFLAGS=-L/usr/local/lib `pkg-config --libs grpc++`            \
            -Wl,--no-as-needed -lgrpc++_reflection -Wl,--as-needed \
-           -lprotobuf -lpthread -ldl
+           -lprotobuf -ldl
 
 
-LIBS_SFML=-lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio 
-LIBS=-lpthread
-INC=-I /home/owner/Documents/Development/git/SMFL/include -I /usr/include -I /usr/local/include
+#LIBS_SFML=-lsfml-system -lsfml-window -lsfml-graphics -lsfml-network -lsfml-audio 
+#LIBS=-lpthread
+#INC=-I /home/owner/Documents/Development/git/SMFL/include -I /usr/include -I /usr/local/include
 
 PROTO_TARGET=NaturalLanguage
 PROTO_PROTOC=protoc
@@ -25,10 +25,10 @@ PROTOS_PATH = .
 vpath %.proto $(PROTOS_PATH)
 
 
-all: system-check main_cpp
+all: system-check $(CPP_TARGET)
 
-main_cpp: $(PROTO_TARGET).pb.o $(PROTO_TARGET).grpc.pb.o  $(CPP_TARGET).o
-	$(CXX) $(CXXFLAGS) $(INC) $^ $(LDFLAGS) $(LIBS) -o $@
+$(CPP_TARGET): $(PROTO_TARGET).pb.o $(PROTO_TARGET).grpc.pb.o  $(CPP_TARGET).o
+	$(CXX) $(CXXFLAGS)  $^ $(LDFLAGS)  -o $@
 
 .PRECIOUS: %.grpc.pb.cc
 %.grpc.pb.cc: %.proto
@@ -39,7 +39,7 @@ main_cpp: $(PROTO_TARGET).pb.o $(PROTO_TARGET).grpc.pb.o  $(CPP_TARGET).o
 	$(PROTO_PROTOC) -I $(PROTOS_PATH) --cpp_out=. $(PROTO_TARGET).proto
 
 clean:
-	$(RM) main_cpp *.o *.pb.cc *.pb.h
+	$(RM) $(CPP_TARGET) *.o *.pb.cc *.pb.h
 
 
 
