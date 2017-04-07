@@ -24,7 +24,7 @@ yaourt -S google-cloud-sdk
 
 Install and configure [Protocol Buffers (proto3)](https://developers.google.com/protocol-buffers/) along with gRPC. The [Quickstart](http://www.grpc.io/docs/quickstart/cpp.html) section on grpc.io covers the installation/setup process in more detail. 
 
-**Arch Linux**:
+*Arch Linux*:
 ```
 Note: This installs both gRPC and Proto3. (Thank jeebus!)
 
@@ -45,7 +45,6 @@ To run the program, simply execute it!
 ./natural_language
 ```
 
----
 
 The first prompt will ask what request type you are making. You will need to enter the number corosponding to the request type.
 ```
