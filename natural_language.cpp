@@ -2,9 +2,12 @@
 #include <iostream>
 #include <unistd.h>
 #include <fstream>
+#include <sstream>
 
 #include <grpc++/grpc++.h>
 #include "NaturalLanguage.grpc.pb.h"
+
+// -------------------- //
 
 //using namespace std;
 using namespace google::cloud::language::v1;
@@ -22,14 +25,26 @@ using grpc::ClientReaderWriter;
 using grpc::ClientWriter;
 using grpc::Status;
 
+// -------------------- //
+
 std::string SCOPE = "language.googleapis.com";
 
+// -------------------- //
 
 int AnalyzeEntities();
 int AnalyzeSentiment();
 int AnalyzeSyntax();
 int AnnotateText();
+
+void read_sentences( const google::protobuf::RepeatedPtrField< Sentence >* sentences );
+void read_tokens( const google::protobuf::RepeatedPtrField< Token >* tokens );
+void read_entity( const google::protobuf::RepeatedPtrField< Entity >* entities );
+void read_sentiment( const Sentiment* document_sentiment );
+void read_language( const std::string* lang );
+
 bool set_document( Document* doc);
+
+// -------------------- //
 
 
 int AnalyzeEntities () {
@@ -38,10 +53,47 @@ int AnalyzeEntities () {
     std::cout << "\n\n------AnalyzeEntities------" << std::endl;
 
     // Init Objects //
+    std::cout << "Init Objects...";
+    AnalyzeEntitiesRequest request;
+    Document *document;
+    EncodingType encoding_type;
+    AnalyzeEntitiesResponse response;
+    grpc::Status status;
+    grpc::ClientContext context;
+    std::cout << "Done!" << std::endl;
     
     // Document //
+    set_document( request.mutable_document() ) ? (void)0 : std::exit( EXIT_FAILURE ) ;
     
     // EncodingType // 
+    std::cout << "Setting Encoding...";
+    request.set_encoding_type( EncodingType::UTF8 );
+    std::cout << "Done!" << std::endl;
+
+    // Send Request //
+    auto creds = grpc::GoogleDefaultCredentials();
+    auto channel = grpc::CreateChannel( SCOPE, creds );
+    std::unique_ptr< LanguageService::Stub> stub( LanguageService::NewStub( channel ) );
+    status = stub->AnalyzeEntities( &context, request, &response );
+
+    // Response //
+    std::cout << "status.ok(): " << status.ok() << std::endl;
+
+    if ( status.ok() ) {
+        std::cout << "\n\n------Response------" << std::endl << std::endl;
+        std::cout << "Status returned OK" << std::endl;
+
+        read_entity( &response.entities()  );
+        read_language( &response.language() );
+
+    } else if ( status.ok() ){
+        std::cout << "Status Returned Canceled" << std::endl;
+
+    }else {
+        std::cout << "gRPC Status Error Code: " << status.error_code() << "\ngRPC Status Error Message: " << status.error_message() << std::endl;
+        std::cerr << "RPC failed" << std::endl;;
+        return -1;
+    }
 
 
     return 0;
@@ -54,11 +106,51 @@ int AnalyzeSentiment () {
     std::cout << "\n\n------AnalyzeSentiment------" << std::endl;
 
     // Init Objects //
-    
+    std::cout << "Init Objects...";
+    AnalyzeSentimentRequest request;
+    Document *document;
+    EncodingType encoding_type;
+    AnalyzeSentimentResponse response;
+    grpc::Status status;
+    grpc::ClientContext context;
+    std::cout << "Done!" << std::endl;
+
     // Document //
+    set_document( request.mutable_document() ) ? (void)0 : std::exit( EXIT_FAILURE ) ;
     
     // EncodingType // 
-    
+    std::cout << "Setting Encoding...";
+    request.set_encoding_type( EncodingType::UTF8 );
+    std::cout << "Done!" << std::endl;
+
+    // Send Request //
+    auto creds = grpc::GoogleDefaultCredentials();
+    auto channel = grpc::CreateChannel( SCOPE, creds );
+    std::unique_ptr< LanguageService::Stub> stub( LanguageService::NewStub( channel ) );
+    status = stub->AnalyzeSentiment( &context, request, &response );
+
+
+    // Response //
+    std::cout << "status.ok(): " << status.ok() << std::endl;
+
+    if ( status.ok() ) {
+        std::cout << "\n\n------Response------" << std::endl << std::endl;
+        std::cout << "Status returned OK" << std::endl;
+
+        read_sentences( &response.sentences() );
+        if ( response.has_document_sentiment() )
+            read_sentiment( &response.document_sentiment() ) ;
+        read_language( &response.language() );
+
+    } else if ( status.ok() ){
+        std::cout << "Status Returned Canceled" << std::endl;
+
+    }else {
+        std::cout << "gRPC Status Error Code: " << status.error_code() << "\ngRPC Status Error Message: " << status.error_message() << std::endl;
+        std::cerr << "RPC failed" << std::endl;;
+        return -1;
+    }
+
 
     return 0;
 
@@ -66,17 +158,52 @@ int AnalyzeSentiment () {
 
 int AnalyzeSyntax () {
 
-    //----------------------//
-    // AnnotateText Request //
-    //----------------------//
 
     std::cout << "\n\n------AnalyzeSyntax------" << std::endl;
 
     // Init Objects //
+    std::cout << "Init Objects...";
+    AnalyzeSyntaxRequest request;
+    Document *document;
+    EncodingType encoding_type;
+    AnalyzeSyntaxResponse response;
+    grpc::Status status;
+    grpc::ClientContext context;
+    std::cout << "Done!" << std::endl;
     
     // Document //
+    set_document( request.mutable_document() ) ? (void)0 : std::exit( EXIT_FAILURE ) ;
     
     // EncodingType // 
+    std::cout << "Setting Encoding...";
+    request.set_encoding_type( EncodingType::UTF8 );
+    std::cout << "Done!" << std::endl;
+
+    // Send Request //
+    auto creds = grpc::GoogleDefaultCredentials();
+    auto channel = grpc::CreateChannel( SCOPE, creds );
+    std::unique_ptr< LanguageService::Stub> stub( LanguageService::NewStub( channel ) );
+    status = stub->AnalyzeSyntax( &context, request, &response );
+
+    // Response //
+    std::cout << "status.ok(): " << status.ok() << std::endl;
+
+    if ( status.ok() ) {
+        std::cout << "\n\n------Response------" << std::endl << std::endl;
+        std::cout << "Status returned OK" << std::endl;
+
+        read_sentences( &response.sentences() );
+        read_tokens( &response.tokens() );
+        read_language( &response.language() );
+
+    } else if ( status.ok() ){
+        std::cout << "Status Returned Canceled" << std::endl;
+
+    }else {
+        std::cout << "gRPC Status Error Code: " << status.error_code() << "\ngRPC Status Error Message: " << status.error_message() << std::endl;
+        std::cerr << "RPC failed" << std::endl;;
+        return -1;
+    }
 
 
     return 0;
@@ -84,9 +211,6 @@ int AnalyzeSyntax () {
 
 int AnnotateText () {
 
-    //----------------------//
-    // AnnotateText Request //
-    //----------------------//
 
     std::cout << "\n\n------AnnotateText------" << std::endl;
 
@@ -101,12 +225,8 @@ int AnnotateText () {
     grpc::ClientContext context;
     std::cout << "Done!" << std::endl;
 
-    sleep(0.5);
-
     // Document //
-    set_document( request.mutable_document() );
-
-    sleep(0.5);
+    set_document( request.mutable_document() ) ? (void)0 : std::exit( EXIT_FAILURE ) ;
      
     // Features //
     std::cout << "Setting Features...";
@@ -116,15 +236,10 @@ int AnnotateText () {
     features->set_extract_document_sentiment( 1 );
     std::cout << "Done!" << std::endl;
 
-    sleep(0.5);
-
     // EncodingType //
     std::cout << "Setting Encoding...";
     request.set_encoding_type( EncodingType::UTF8 );
     std::cout << "Done!" << std::endl;
-
-    sleep(0.5);
-
 
     // Send Request //
     auto creds = grpc::GoogleDefaultCredentials();
@@ -139,173 +254,12 @@ int AnnotateText () {
         std::cout << "\n\n------Response------" << std::endl << std::endl;
         std::cout << "Status returned OK" << std::endl;
 
-
-        // SENTENCES //
-        std::cout << "----Sentences----" << std::endl;
-        std::cout << "Sentences Size: " << response.sentences_size() << std::endl;
-        for( int i = 0; i < response.sentences_size(); i++ ) {
-            std::cout << "Sentence " << i << " has text: " << response.sentences( i ).has_text() << std::endl;
-            if ( response.sentences( i ).has_text() ) {
-                std::cout << "\tSentence text: " << response.sentences( i ).text().content() << std::endl;
-            }
-
-            std::cout << "Sentence " << i << " has sentiment: " << response.sentences( i ).has_sentiment() << std::endl;
-            if ( response.sentences( i ).has_text() ) {
-                std::cout << "\tSentence " << i << " sentiment: "
-                    << "\n\t\tMagnitude: "
-                    << response.sentences( i ).sentiment().magnitude() // float
-                    << "\n\t\tScore: "
-                    << response.sentences( i ).sentiment().score() // float
-                    << std::endl;
-            }
-
-        }
-
-        // TOKENS //
-        std::cout << "\n----Tokens----" << std::endl;
-        std::cout << "Tokens Size: " << response.tokens_size() << std::endl;
-        for ( int i = 0; i < response.tokens_size(); i++ ) {
-           
-            std::cout
-                << "-- Token " << i << " --"
-                << std::endl;
-
-            std::cout
-                << "Token " << i << " has text: " 
-                << response.tokens( i ).has_text() 
-                << std::endl;
-
-            if ( response.tokens( i ).has_text() ) {
-                std::cout
-                    << "\tToken " << i << " text: " 
-                    << response.tokens( i ).text().content() // string
-                    << "\n\tScore: "
-                    << response.tokens( i ).text().begin_offset() // int32 
-                    << std::endl;
-            }
-
-            std::cout
-                << "Token " << i << " has PartOfSpeech: " 
-                << response.tokens( i ).has_part_of_speech() 
-                << std::endl;
-
-            if ( response.tokens( i ).has_part_of_speech() ) {
-                std::cout
-                    << "\tToken " << i << " PartOfSpeech: "
-                    << "\n\t\tAspect: "
-                    << PartOfSpeech_Aspect_Name( response.tokens( i ).part_of_speech().aspect() )
-                    << "\n\t\tCase: "
-                    << PartOfSpeech_Case_Name( response.tokens( i ).part_of_speech().instance() )
-                    << "\n\t\tForm: "
-                    << PartOfSpeech_Form_Name( response.tokens( i ).part_of_speech().form() )
-                    << "\n\t\tGender: "
-                    << PartOfSpeech_Gender_Name( response.tokens( i ).part_of_speech().gender() )
-                    << "\n\t\tMood: "
-                    << PartOfSpeech_Mood_Name( response.tokens( i ).part_of_speech().mood() )
-                    << "\n\t\tNumber: "
-                    << PartOfSpeech_Number_Name( response.tokens( i ).part_of_speech().number() )
-                    << "\n\t\tPerson: "
-                    << PartOfSpeech_Person_Name( response.tokens( i ).part_of_speech().person() )
-                    << "\n\t\tProper: "
-                    << PartOfSpeech_Proper_Name( response.tokens( i ).part_of_speech().proper() )
-                    << "\n\t\tReciprocity: "
-                    << PartOfSpeech_Reciprocity_Name( response.tokens( i ).part_of_speech().reciprocity() )
-                    << "\n\t\tTag: "
-                    << PartOfSpeech_Tag_Name( response.tokens( i ).part_of_speech().tag() )
-                    << "\n\t\tTense: "
-                    << PartOfSpeech_Tense_Name( response.tokens( i ).part_of_speech().tense() )
-                    << "\n\t\tVoice: "
-                    << PartOfSpeech_Voice_Name( response.tokens( i ).part_of_speech().voice() )
-
-
-                    << std::endl;
-            
-            }
-        
-            std::cout
-                << "Token " << i << " has DependencyEdge: "
-                << response.tokens( i ).has_dependency_edge()
-                << std::endl;
-
-            if ( response.tokens( i ).has_dependency_edge() ) {
-                std::cout
-                    << "\tToken " << i << " DependencyEdge: "
-                    << "\n\t\tHead Token Index: "
-                    << response.tokens( i ).dependency_edge().head_token_index() // int32
-                    << "\n\t\tLabel: "
-                    << DependencyEdge_Label_Name( response.tokens( i ).dependency_edge().label() )
-                    << std::endl;
-            
-            }
-
-            std::cout
-                << "Token " << i << " lemma: "
-                << response.tokens( i ).lemma() // string
-                << std::endl
-                << std::endl;
-
-        }
-
-        // ENTITIES //
-        std::cout << "\n----Entities----" << std::endl;
-        std::cout << "Entities Size: " << response.entities_size() << std::endl;
-        for ( int i = 0; i < response.entities_size(); i++ ) {
-            std::cout << "Entity " << i << " name: " << response.entities( i ).name() << std::endl;
-            
-            std::cout
-                << "Entity Type: "
-                << Entity_Type_Name( response.entities( i ).type() )
-                << std::endl;
-
-            for ( int j = 0; j < response.entities( i ).metadata_size(); j++ ) {
-                //response.entities( i ).metadata( j ) // ::google::protobuf::Map
-            }
-            
-            std::cout
-                << "Salience: "
-                << response.entities( i ).salience() // float
-                << std::endl;
-
-            for ( int j = 0; j < response.entities( i ).mentions_size(); j++ ) {
-                
-                std::cout
-                    << "Entity Mention " << j << " has text: "
-                    << response.entities( i ).mentions( j ).has_text()
-                    << std::endl;
-
-                if ( response.entities( i ).mentions( j ).has_text() ) {
-                    std::cout
-                        << "\tEntity Mention " << j << " text content: "
-                        << response.entities( i ).mentions( j ).text().content()
-                        << "\n\tEntity Mention " << j << " text begin offset: "
-                        << response.entities( i ).mentions( j ).text().begin_offset()
-                        << "\n\tEntity Mention " << j << " type: "
-                        << EntityMention_Type_Name( response.entities( i ).mentions( j ).type() )
-                        << std::endl;
-                }
-            }
-
-
-        }
-
-
-        // SENTIMENT /
-        std::cout << "\n----Sentiment----" << std::endl;
-        std::cout << "Has Document Sentiment: " << response.has_document_sentiment() << std::endl;
-        
-        if ( response.has_document_sentiment() ) {
-            std::cout
-                << "Document Sentiment magnitude: "
-                << response.document_sentiment().magnitude()
-                << "\nDocument Sentiment score: "
-                << response.document_sentiment().magnitude()
-                << std::endl;
-        }
-
-        // LANGUAGE //
-        std::cout << "\n----Language----" << std::endl;
-        std::cout << "Language: " << response.language() << std::endl;
-
+        read_sentences( &response.sentences() );
+        read_tokens( &response.tokens() );
+        read_entity( &response.entities()  );
+        if ( response.has_document_sentiment() )
+            read_sentiment( &response.document_sentiment() ) ;
+        read_language( &response.language() );
 
     } else if ( status.ok() ){
         std::cout << "Status Returned Canceled" << std::endl;
@@ -316,19 +270,196 @@ int AnnotateText () {
         return -1;
     }
 
-    std::cout << "\nAll Finished!" << std::endl;
-
-
-
-
 
     return 0;
 
 }
 
-// Document.type() //
-// Document.set_content() //
-// Document.set_gcs_content_uri() //
+
+void read_sentences( const google::protobuf::RepeatedPtrField< Sentence >* sentences ) {
+
+
+        // SENTENCES //
+        std::cout << "----Sentences----" << std::endl;
+        std::cout << "Sentences Size: " << sentences->size() << std::endl;
+        for( int i = 0; i < sentences->size(); i++ ) {
+            std::cout << "Sentence " << i << " has text: " << sentences->Get( i ).has_text() << std::endl;
+            if ( sentences->Get( i ).has_text() ) {
+                std::cout << "\tSentence text: " << sentences->Get( i ).text().content() << std::endl;
+            }
+
+            std::cout << "Sentence " << i << " has sentiment: " << sentences->Get( i ).has_sentiment() << std::endl;
+            if ( sentences->Get( i ).has_text() ) {
+                std::cout << "\tSentence " << i << " sentiment: "
+                    << "\n\t\tMagnitude: "
+                    << sentences->Get( i ).sentiment().magnitude() // float
+                    << "\n\t\tScore: "
+                    << sentences->Get( i ).sentiment().score() // float
+                    << std::endl;
+            }
+
+        }
+
+}
+
+void read_tokens( const google::protobuf::RepeatedPtrField< Token >* tokens ) {
+
+
+        // TOKENS //
+        std::cout << "\n----Tokens----" << std::endl;
+        std::cout << "Tokens Size: " << tokens->size() << std::endl;
+        for ( int i = 0; i < tokens->size(); i++ ) {
+           
+            std::cout
+                << "-- Token " << i << " --"
+                << std::endl;
+
+            std::cout
+                << "Token " << i << " has text: " 
+                << tokens->Get( i ).has_text() 
+                << std::endl;
+
+            if ( tokens->Get( i ).has_text() ) {
+                std::cout
+                    << "\tToken " << i << " text: " 
+                    << tokens->Get( i ).text().content() // string
+                    << "\n\tScore: "
+                    << tokens->Get( i ).text().begin_offset() // int32 
+                    << std::endl;
+            }
+
+            std::cout
+                << "Token " << i << " has PartOfSpeech: " 
+                << tokens->Get( i ).has_part_of_speech() 
+                << std::endl;
+
+            if ( tokens->Get( i ).has_part_of_speech() ) {
+                std::cout
+                    << "\tToken " << i << " PartOfSpeech: "
+                    << "\n\t\tAspect: "
+                    << PartOfSpeech_Aspect_Name( tokens->Get( i ).part_of_speech().aspect() )
+                    << "\n\t\tCase: "
+                    << PartOfSpeech_Case_Name( tokens->Get( i ).part_of_speech().instance() )
+                    << "\n\t\tForm: "
+                    << PartOfSpeech_Form_Name( tokens->Get( i ).part_of_speech().form() )
+                    << "\n\t\tGender: "
+                    << PartOfSpeech_Gender_Name( tokens->Get( i ).part_of_speech().gender() )
+                    << "\n\t\tMood: "
+                    << PartOfSpeech_Mood_Name( tokens->Get( i ).part_of_speech().mood() )
+                    << "\n\t\tNumber: "
+                    << PartOfSpeech_Number_Name( tokens->Get( i ).part_of_speech().number() )
+                    << "\n\t\tPerson: "
+                    << PartOfSpeech_Person_Name( tokens->Get( i ).part_of_speech().person() )
+                    << "\n\t\tProper: "
+                    << PartOfSpeech_Proper_Name( tokens->Get( i ).part_of_speech().proper() )
+                    << "\n\t\tReciprocity: "
+                    << PartOfSpeech_Reciprocity_Name( tokens->Get( i ).part_of_speech().reciprocity() )
+                    << "\n\t\tTag: "
+                    << PartOfSpeech_Tag_Name( tokens->Get( i ).part_of_speech().tag() )
+                    << "\n\t\tTense: "
+                    << PartOfSpeech_Tense_Name( tokens->Get( i ).part_of_speech().tense() )
+                    << "\n\t\tVoice: "
+                    << PartOfSpeech_Voice_Name( tokens->Get( i ).part_of_speech().voice() )
+
+
+                    << std::endl;
+            
+            }
+        
+            std::cout
+                << "Token " << i << " has DependencyEdge: "
+                << tokens->Get( i ).has_dependency_edge()
+                << std::endl;
+
+            if ( tokens->Get( i ).has_dependency_edge() ) {
+                std::cout
+                    << "\tToken " << i << " DependencyEdge: "
+                    << "\n\t\tHead Token Index: "
+                    << tokens->Get( i ).dependency_edge().head_token_index() // int32
+                    << "\n\t\tLabel: "
+                    << DependencyEdge_Label_Name( tokens->Get( i ).dependency_edge().label() )
+                    << std::endl;
+            
+            }
+
+            std::cout
+                << "Token " << i << " lemma: "
+                << tokens->Get( i ).lemma() // string
+                << std::endl
+                << std::endl;
+
+        }
+
+}
+
+void read_entity( const google::protobuf::RepeatedPtrField< Entity >* entities ) {
+
+        // ENTITIES //
+        std::cout << "\n----Entities----" << std::endl;
+        std::cout << "Entities Size: " << entities->size() << std::endl;
+        for ( int i = 0; i < entities->size(); i++ ) {
+            std::cout << "Entity " << i << " name: " << entities->Get( i ).name() << std::endl;
+            
+            std::cout
+                << "Entity Type: "
+                << Entity_Type_Name( entities->Get( i ).type() )
+                << std::endl;
+
+            for ( int j = 0; j < entities->Get( i ).metadata_size(); j++ ) {
+                //response.entities->Get( i ).metadata( j ) // ::google::protobuf::Map // TODO: [METADATA_MAP] //
+            }
+            
+            std::cout
+                << "Salience: "
+                << entities->Get( i ).salience() // float
+                << std::endl;
+
+            for ( int j = 0; j < entities->Get( i ).mentions_size(); j++ ) {
+                
+                std::cout
+                    << "Entity Mention " << j << " has text: "
+                    << entities->Get( i ).mentions( j ).has_text()
+                    << std::endl;
+
+                if ( entities->Get( i ).mentions( j ).has_text() ) {
+                    std::cout
+                        << "\tEntity Mention " << j << " text content: "
+                        << entities->Get( i ).mentions( j ).text().content()
+                        << "\n\tEntity Mention " << j << " text begin offset: "
+                        << entities->Get( i ).mentions( j ).text().begin_offset()
+                        << "\n\tEntity Mention " << j << " type: "
+                        << EntityMention_Type_Name( entities->Get( i ).mentions( j ).type() )
+                        << std::endl;
+                }
+            }
+        }
+
+
+}
+
+void read_sentiment( const Sentiment* document_sentiment ) {
+    
+    // SENTIMENT /
+    std::cout << "\n----Sentiment----" << std::endl;
+    //std::cout << "Has Document Sentiment: " << has_document_sentiment() << std::endl;
+    
+    std::cout
+        << "Document Sentiment magnitude: "
+        << document_sentiment->magnitude()
+        << "\nDocument Sentiment score: "
+        << document_sentiment->magnitude()
+        << std::endl;
+}
+
+void read_language( const std::string* lang ) {
+
+
+        // LANGUAGE //
+        std::cout << "\n----Language----" << std::endl;
+        std::cout << "Language: " << *lang << std::endl;
+
+}
+
 bool  set_document( Document* doc ) {
 
     int content_type;
@@ -336,6 +467,7 @@ bool  set_document( Document* doc ) {
     std::fstream file;
     char content_c[256];
     std::string name;
+    std::stringstream content_buffer;
 
     system("clear");
 
@@ -355,8 +487,9 @@ bool  set_document( Document* doc ) {
             std::cout << "Please enter the file to be analyzed: ";
             std::cin >> content_file;
             file.open( content_file, std::ios::in);
+            content_buffer << file.rdbuf();
             file.close();
-            doc->set_content( content );
+            doc->set_content( content_buffer.str() );
             break;
         case 2:
             // Local Content //
@@ -400,7 +533,6 @@ int main ( int argc, char* argv[] ) {
         << "\nPlease select a number...";
 
     std::cin >> request_type;
-    system("clear");
 
     switch ( request_type ) {
         case 1:
@@ -417,17 +549,17 @@ int main ( int argc, char* argv[] ) {
             break;
         default:
             std::cout << "Selection \"" << request_type << "\" is not valid." << std::endl;
+            std::exit( EXIT_FAILURE );
             break;
     
     } 
 
 
+    std::cout << "\nAll Finished!" << std::endl;
     //::google::protobuf::ShutdownProtobufLibrary();
     return 0;
 
 }
 
-// TODO: In AnnotateText(), document->set_source() currently only accepts "gs://" content, even when document->set_type() is set to PLAIN_TEXT. //
-//
-//
+// TODO: [METADATA_MAP] Finish reading this back. //
 //
