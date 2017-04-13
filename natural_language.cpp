@@ -447,7 +447,7 @@ void read_sentiment( const Sentiment* document_sentiment ) {
         << "Document Sentiment magnitude: "
         << document_sentiment->magnitude()
         << "\nDocument Sentiment score: "
-        << document_sentiment->magnitude()
+        << document_sentiment->score()
         << std::endl;
 }
 
