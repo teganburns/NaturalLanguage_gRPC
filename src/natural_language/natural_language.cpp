@@ -1,48 +1,7 @@
-// Author: Tegan Burns-Berger
-#include <iostream>
-#include <unistd.h>
-#include <fstream>
-#include <sstream>
+// Author: Tegan Burns
+// Website: teganburns.com
 
-#include <grpc++/grpc++.h>
-#include "NaturalLanguage.grpc.pb.h"
-
-// -------------------- //
-
-//using namespace std;
-using namespace google::cloud::language::v1;
-
-
-using grpc::CompletionQueue;
-using grpc::Channel;
-using grpc::RpcService;
-using grpc::ServerCompletionQueue;
-using grpc::ServerContext;
-
-using grpc::ClientContext;
-using grpc::ClientReader;
-using grpc::ClientReaderWriter;
-using grpc::ClientWriter;
-using grpc::Status;
-
-// -------------------- //
-
-std::string SCOPE = "language.googleapis.com";
-
-// -------------------- //
-
-int AnalyzeEntities();
-int AnalyzeSentiment();
-int AnalyzeSyntax();
-int AnnotateText();
-
-void read_sentences( const google::protobuf::RepeatedPtrField< Sentence >* sentences );
-void read_tokens( const google::protobuf::RepeatedPtrField< Token >* tokens );
-void read_entity( const google::protobuf::RepeatedPtrField< Entity >* entities );
-void read_sentiment( const Sentiment* document_sentiment );
-void read_language( const std::string* lang );
-
-bool set_document( Document* doc);
+#include "natural_language.hpp.in"
 
 // -------------------- //
 

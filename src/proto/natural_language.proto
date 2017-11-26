@@ -1,4 +1,5 @@
-// Author: Tegan Burns-Berger
+// Author: Tegan Burns
+// Website: teganburns.com
 
 // Should match January 18, 2017 revision https://cloud.google.com/natural-language/docs/reference/rpc/google.cloud.language.v1
 
@@ -41,7 +42,7 @@
 //Token (message)
 
 
-syntax = "proto3";
+syntax="proto3";
 
 package google.cloud.language.v1;
 
