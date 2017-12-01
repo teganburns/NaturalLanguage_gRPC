@@ -15,17 +15,6 @@
 
 using namespace google::cloud::language::v1;
 
-//using grpc::CompletionQueue;
-//using grpc::Channel;
-//using grpc::RpcService;
-//using grpc::ServerCompletionQueue;
-//using grpc::ServerContext;
-//
-//using grpc::ClientContext;
-//using grpc::ClientReader;
-//using grpc::ClientReaderWriter;
-//using grpc::ClientWriter;
-//using grpc::Status;
 
 // -------------------- //
 
@@ -45,4 +34,20 @@ void read_sentiment( const Sentiment* document_sentiment );
 void read_language( const std::string* lang );
 
 bool set_document( Document* doc);
+
+AnalyzeEntitiesRequest MakeAnalyzeEntitiesRequest( Document_Type doc_type_, std::string doc_language_, std::string doc_content_ );
+AnalyzeSentimentRequest MakeAnalyzeSentimentRequest( Document_Type doc_type_, std::string doc_language_, std::string doc_content_ );
+AnalyzeSyntaxRequest MakeAnalyzeSyntaxRequest( Document_Type doc_type_, std::string doc_language_, std::string doc_content_ );
+AnnotateTextRequest MakeAnnotateTextRequest( Document_Type doc_type_, std::string doc_language_, std::string doc_content_ );
+DependencyEdge MakeDependencyEdge( );
+Document MakeDocument( int type_, std::string language_, std::string content_ );
+EncodingType MakeEncodingType( );
+Entity MakeEntity( );
+EntityMention MakeEntityMention( );
+PartOfSpeech MakePartOfSpeech( );
+Sentence MakeSentence( );
+Sentiment MakeSentiment( );
+TextSpan MakeTextSpan( std::string content_, long begin_offset_ );
+Token MakeToken( std::string content_, long begin_offset_ );
+
 
